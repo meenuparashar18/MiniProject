@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import apiService from '../apiService';
+import { toAbsoluteAssetUrl } from '../config';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -26,10 +27,7 @@ const AdminDashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const avatarPreviewUrl =
-    profileForm.avatarUrl && profileForm.avatarUrl.startsWith('/')
-      ? `http://localhost:5001${profileForm.avatarUrl}`
-      : profileForm.avatarUrl;
+  const avatarPreviewUrl = toAbsoluteAssetUrl(profileForm.avatarUrl);
 
   useEffect(() => {
     const fetchPosts = async () => {

@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import apiService from '../apiService';
 import PaginatedPostList from '../components/PaginatedPostList';
+import { toAbsoluteAssetUrl } from '../config';
 
 const ProfilePage = () => {
   const { username } = useParams();
@@ -61,10 +62,8 @@ const ProfilePage = () => {
 
   const isFollowing =
     currentUser?.following?.some((id) => id === profile.id || id?._id === profile.id) || false;
-  const avatarUrl =
-    profile.avatarUrl && profile.avatarUrl.startsWith('/')
-      ? `http://localhost:5001${profile.avatarUrl}`
-      : profile.avatarUrl;
+  const avatarUrl = toAbsoluteAssetUrl(profile.avatarUrl);
+  const coverImageUrl = toAbsoluteAssetUrl(profile.coverImageUrl);
 
   return (
     <section className="admin-page">
@@ -72,7 +71,7 @@ const ProfilePage = () => {
         <title>{profile.username} | PersonalBlogAI</title>
       </Helmet>
 
-      <section className="profile-page-cover" style={profile.coverImageUrl ? { backgroundImage: `linear-gradient(rgba(17,24,39,0.25), rgba(17,24,39,0.55)), url(${profile.coverImageUrl})` } : undefined}>
+      <section className="profile-page-cover" style={coverImageUrl ? { backgroundImage: `linear-gradient(rgba(17,24,39,0.25), rgba(17,24,39,0.55)), url(${coverImageUrl})` } : undefined}>
       <section className="profile-page-hero">
         <div className="profile-page-main">
           {avatarUrl ? <img className="profile-avatar-large" src={avatarUrl} alt={profile.username} /> : <div className="profile-avatar-large fallback-avatar">{profile.username.slice(0, 1).toUpperCase()}</div>}

@@ -1,10 +1,11 @@
 import { io } from 'socket.io-client';
+import { API_ORIGIN } from './config';
 
 let socket;
 
 export const getSocket = () => {
   if (!socket) {
-    socket = io(process.env.REACT_APP_API_ORIGIN || 'http://localhost:5001', {
+    socket = io(API_ORIGIN, {
       autoConnect: false,
     });
   }

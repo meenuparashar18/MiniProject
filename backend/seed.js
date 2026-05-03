@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 // We need our User model to create a new user.
 const User = require('./models/userModel');
+const { getMongoConfig } = require('./config/database');
 
 // 2. CONFIGURE DOTENV
 // This loads the variables from your .env file (like MONGO_URI) into process.env
@@ -22,9 +23,19 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '9785854770';
 const seedAdmin = async () => {
   try {
     // 5. CONNECT TO THE DATABASE
-    // We use the MONGO_URI from our environment variables.
+    // We use the first supported Mongo connection variable from the environment.
+    const mongoConfig = getMongoConfig();
+
+    if (!mongoConfig.uri) {
+      throw new Error('Set MONGO_URI, MONGODB_URI, MONGO_URL, or DATABASE_URL before running seed.js.');
+    }
+
+    if (mongoConfig.isRailway && mongoConfig.isLocalMongoUrl(mongoConfig.uri)) {
+      throw new Error(`${mongoConfig.source} points to localhost. Use MongoDB Atlas or Railway Mongo in Railway.`);
+    }
+
     console.log('Connecting to database...');
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(mongoConfig.uri);
     console.log('Database connected successfully.');
 
     // 6. CHECK IF THE ADMIN USER ALREADY EXISTS

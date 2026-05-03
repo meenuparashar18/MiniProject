@@ -3,10 +3,21 @@ require('dotenv').config();
 
 const mongoose = require('mongoose');
 const Post = require('./models/postModel');
+const { getMongoConfig } = require('./config/database');
 
 const backfillSlugs = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    const mongoConfig = getMongoConfig();
+
+    if (!mongoConfig.uri) {
+      throw new Error('Set MONGO_URI, MONGODB_URI, MONGO_URL, or DATABASE_URL before running backfillSlugs.js.');
+    }
+
+    if (mongoConfig.isRailway && mongoConfig.isLocalMongoUrl(mongoConfig.uri)) {
+      throw new Error(`${mongoConfig.source} points to localhost. Use MongoDB Atlas or Railway Mongo in Railway.`);
+    }
+
+    await mongoose.connect(mongoConfig.uri);
     const posts = await Post.find({});
 
     for (const post of posts) {

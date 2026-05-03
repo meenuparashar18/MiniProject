@@ -34,7 +34,8 @@ const LoginPage = () => {
       navigate('/admin/dashboard');
     } catch (err) {
       setError(
-        err.response?.data?.message ||
+        err.userMessage ||
+          err.response?.data?.message ||
           (mode === 'register' ? 'Signup failed. Please try again.' : 'Login failed. Please try again.')
       );
     } finally {
