@@ -1,9 +1,11 @@
-export const registerServiceWorker = () => {
-  if (process.env.NODE_ENV !== 'production' || !('serviceWorker' in navigator)) {
-    return;
+export const unregister = () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready
+      .then((registration) => {
+        registration.unregister();
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   }
-
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-  });
 };

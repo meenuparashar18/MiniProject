@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import './index.css'; // We'll keep the base styles for now
 import App from './App';
-import { registerServiceWorker } from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 
 // This is the core logic that tells React where to render the application.
 // It finds the HTML element with the id of 'root' in your public/index.html file.
@@ -20,4 +20,4 @@ root.render(
   </React.StrictMode>
 );
 
-registerServiceWorker();
+unregister();
