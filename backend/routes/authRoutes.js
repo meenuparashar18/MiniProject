@@ -19,3 +19,4 @@ router.patch('/me', protect, authController.updateMe);
 
 // 3. Export the router so it can be used in server.jsA
 module.exports = router;
+// By exporting the router, we can import it in our server.js file and use it to handle authentication-related routes in our application.
