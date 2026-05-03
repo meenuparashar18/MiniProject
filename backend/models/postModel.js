@@ -179,3 +179,4 @@ postSchema.pre('save', async function () {
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
+// By exporting the Post model, we can import it in our controller files to perform CRUD operations on our blog posts.
